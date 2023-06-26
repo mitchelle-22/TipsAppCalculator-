@@ -39,6 +39,8 @@ class MainActivity : AppCompatActivity() {
             override fun onProgressChanged(p0: SeekBar?,progress:Int, fromUser: Boolean) {
               Log.i(TAG,"onProgressChanged $progress")
                 tvTipPercentLabel.text = "$progress%"
+                computeTipAndTotal()
+                updateTipDescription(progress)
             }
 
             override fun onStartTrackingTouch(p0: SeekBar?) {
@@ -62,9 +64,22 @@ class MainActivity : AppCompatActivity() {
             override fun afterTextChanged(s: Editable?) {
                 Log.i(TAG,"afterTextChanged $s")
                 computeTipAndTotal()
+
             }
 
         })
+    }
+
+    private fun updateTipDescription(tipPercent: Int) {
+        val tipDescription = when(tipPercent)
+        {
+            in 0..9 -> "Poor"
+            in 10..14->"Acceptable"
+            in 15..19->"Good"
+            in 20..24->"Great"
+            else->"Amazing"
+        }
+        tvTipDescription.text = tipDescription
     }
 
     private fun computeTipAndTotal() {
